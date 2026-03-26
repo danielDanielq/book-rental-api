@@ -2,12 +2,9 @@ package com.bookrental.app.entity;
 
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Entity
-@Table(name = "users")
-public class User {
+@Table(name = "librarians")
+public class Librarian {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -25,22 +22,7 @@ public class User {
     @Column(name = "password_hash", length = 255, nullable = false) // Note: Standard length for hashed passwords;
     private String passwordHash;
 
-    @OneToOne(
-            cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY
-    )
-    @JoinColumn(name = "address_id")
-    private Address address;
-
-    @OneToMany(
-            mappedBy = "user",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true,
-            fetch = FetchType.LAZY
-    )
-    private List<Rental> rentals = new ArrayList<>();
-
-    public User() {}
+    public Librarian() {}
 
     public Long getId() {return id;}
     public void setId(Long id) {this.id = id;}
@@ -56,23 +38,4 @@ public class User {
 
     public String getPasswordHash() {return passwordHash;}
     public void setPasswordHash(String passwordHash) {this.passwordHash = passwordHash;}
-
-    public Address getAddress() {return address;}
-    public void setAddress(Address address) {
-        this.address = address;
-        address.setUser(this);
-    }
-
-    public List<Rental> getRentals() {return rentals;}
-    public void setRentals(List<Rental> rentals) {this.rentals = rentals;}
-
-    public void addRental(Rental rental) {
-        rentals.add(rental);
-        rental.setUser(this);
-    }
-
-    public void removeRental(Rental rental) {
-        rentals.remove(rental);
-        rental.setUser(null);
-    }
 }
