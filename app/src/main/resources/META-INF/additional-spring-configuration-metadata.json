@@ -1,0 +1,34 @@
+{
+  "properties": [
+    {
+      "name": "auth.oauth2.server-url",
+      "type": "java.lang.String",
+      "description": "url of the oauth2 server"
+    },
+    {
+      "name": "auth.oauth2.realm",
+      "type": "java.lang.String",
+      "description": "name of the realm of your application"
+    },
+    {
+      "name": "auth.oauth2.admin.username",
+      "type": "java.lang.String",
+      "description": "username of the admin of the oauth2 server"
+    },
+    {
+      "name": "auth.oauth2.admin.password",
+      "type": "java.lang.String",
+      "description": "password of the admin of the oauth2 server"
+    },
+    {
+      "name": "auth.oauth2.admin.client-id",
+      "type": "java.lang.String",
+      "description": "client id of the admin"
+    },
+    {
+      "name": "auth.oauth2.admin.realm",
+      "type": "java.lang.String",
+      "description": "the admin realm"
+    }
+  ]
+}
