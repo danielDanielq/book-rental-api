@@ -1,4 +1,4 @@
 package com.bookrental.app.mapper;
 
-public class UserMapper {
+public class BookMapper {
 }
