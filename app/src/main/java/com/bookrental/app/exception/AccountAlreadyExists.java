@@ -1,4 +1,7 @@
 package com.bookrental.app.exception;
 
-public class AccountAlreadyExists {
+public class AccountAlreadyExists extends RuntimeException{
+    public AccountAlreadyExists(String message){
+        super(message);
+    }
 }

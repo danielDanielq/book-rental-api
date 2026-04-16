@@ -2,13 +2,15 @@ package com.bookrental.app.entity;
 
 import com.bookrental.app.enums.Status;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 @Entity
 @Table(name = "rentals")
+@Getter @Setter @NoArgsConstructor
 public class Rental {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,23 +41,6 @@ public class Rental {
     )
     @JoinColumn(name = "book_id")
     private Book book;
-
-    public Rental() {}
-
-    public Long getId() {return id;}
-    public void setId(Long id) {this.id = id;}
-
-    public LocalDateTime getRentalDate() {return rentalDate;}
-    public void setRentalDate(LocalDateTime rentalDate) {this.rentalDate = rentalDate;}
-
-    public LocalDateTime getDueDate() {return dueDate;}
-    public void setDueDate(LocalDateTime dueDate) {this.dueDate = dueDate;}
-
-    public LocalDateTime getReturnDate() {return returnDate;}
-    public void setReturnDate(LocalDateTime returnDate) {this.returnDate = returnDate;}
-
-    public Status getStatus() {return status;}
-    public void setStatus(Status status) {this.status = status;}
 
     public User getUser() {return user;}
     public void setUser(User user) {this.user = user;} // Note: no need to set the owner here;
