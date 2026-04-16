@@ -7,8 +7,7 @@ import com.bookrental.app.exception.AccountAlreadyExists;
 import com.bookrental.app.exception.ResouceNotFoundException;
 import com.bookrental.app.mapper.AuthorMapper;
 import com.bookrental.app.repository.AuthorRepository;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,8 +39,19 @@ public class AuthorService {
         return AuthorMapper.toSimpleResponse(authorToFind);
     }
 
-    public Page<AuthorSimpleResponse> getAuthorByFirstName(int page, int size) { // Note: page number and the entity size;
-        PageRequest pageRequest = PageRequest.of(page, size); // Note: this is the page request;
+    public Page<AuthorSimpleResponse> getAllAuthors(String firstName, String lastName, String country, String city, int page, int size, String sort) { // Note: page number and the entity size;
+        Author probeAuthor = new Author();
+        probeAuthor.setFirstName(firstName);
+        probeAuthor.setLastName(lastName);
+        probeAuthor.setCountry(country);
+        probeAuthor.setCity(city);
+
+        ExampleMatcher matcher = ExampleMatcher.matching() // Note: Using this example matcher helps to search within the data containing the request params;
+                .withIgnoreCase()
+                .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
+
+
+        Pageable pageRequest = PageRequest.of(page, size, Sort.by(sort)); // Note: this is the page request;
         Page<Author> authorPage = authorRepository.findAll(pageRequest); // Note: asking the db for this exact page which contains a list of the entities;
 
         Page<AuthorSimpleResponse> responsePage = authorPage.map(p -> AuthorMapper.toSimpleResponse(p)); // Note: mapping to simple response;

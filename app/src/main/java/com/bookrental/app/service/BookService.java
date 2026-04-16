@@ -6,13 +6,13 @@ import com.bookrental.app.dto.bookdto.UpdateBookRequest;
 import com.bookrental.app.entity.Author;
 import com.bookrental.app.entity.Book;
 import com.bookrental.app.entity.Publisher;
+import com.bookrental.app.enums.Genre;
 import com.bookrental.app.exception.ResouceNotFoundException;
 import com.bookrental.app.mapper.BookMapper;
 import com.bookrental.app.repository.AuthorRepository;
 import com.bookrental.app.repository.BookRepository;
 import com.bookrental.app.repository.PublisherRepository;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -57,9 +57,23 @@ public class BookService {
         return BookMapper.toSimpleDTO(bookToFind);
     }
 
-    public Page<BookSimpleResponse> getAllBooks(int page, int size) { // Note: page number and the entity size;
-        PageRequest pageRequest = PageRequest.of(page, size); // Note: this is the page request;
-        Page<Book> bookPage = bookRepository.findAll(pageRequest); // Note: asking the db for this exact page which contains a list of the entities;
+    public Page<BookSimpleResponse> searchBooks(String title, String isbn, Integer publishedYear, Genre genre, int page, int size, String sortBy) { // Note: page number and the entity size;
+        Book probeBook = new Book();
+
+        probeBook.setTitle(title);
+        probeBook.setIsbn(isbn);
+        probeBook.setPublishedYear(publishedYear);
+        probeBook.setGenre(genre);
+
+        ExampleMatcher matcher = ExampleMatcher.matching() // Note: Using this example matcher helps to search within the data containing the request params;
+                .withIgnoreCase()
+                .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
+
+        Example<Book> example = Example.of(probeBook, matcher); // Note: Getting the rules and probe in one single example;
+
+        Pageable pageRequest = PageRequest.of(page, size, Sort.by(sortBy)); // Note: this is the page request;
+        Page<Book> bookPage = bookRepository.findAll(example, pageRequest); // Note: asking the db for this exact page which contains a list of the entities;
+                                                                            // Note: searching by the example that contains the rules and exact request params. Spring knows to handle this with findAll(Example<T> example) already. The result is a capable search in only 1 endpoint;
 
         Page<BookSimpleResponse> responsePage = bookPage.map(book -> BookMapper.toSimpleDTO(book)); // Note: mapping to simple response;
         return responsePage;
@@ -68,7 +82,7 @@ public class BookService {
     @Transactional
     public BookSimpleResponse updateBookById(Long id, UpdateBookRequest bookRequest) {
         Book bookToUpdate = bookRepository.findById(id).orElseThrow(
-                () ->  new ResouceNotFoundException("The book is missing from the database")
+                () -> new ResouceNotFoundException("The book is missing from the database")
         );
         bookToUpdate.setTitle(bookRequest.getTitle());
         bookToUpdate.setPublishedYear(bookRequest.getPublishedYear());
@@ -78,7 +92,8 @@ public class BookService {
         return BookMapper.toSimpleDTO(bookToUpdate);
     }
 
-    @Transactional // Note: For orphanRemoval = true to work we need @Transactional so that Hibernate follows for Dirty Checkings;
+    @Transactional
+    // Note: For orphanRemoval = true to work we need @Transactional so that Hibernate follows for Dirty Checkings;
     public void deleteBookById(Long id) {
         Book bookToDelete = bookRepository.findById(id).orElseThrow(
                 () -> new ResouceNotFoundException("The book is missing from the database")
@@ -90,5 +105,6 @@ public class BookService {
         author.removeBook(bookToDelete);
         publisher.removeBook(bookToDelete);
     }
+
 
 }

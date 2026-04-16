@@ -31,8 +31,16 @@ public class AuthorController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<AuthorSimpleResponse>> getAll(@RequestParam int page, @RequestParam int size) {
-        Page<AuthorSimpleResponse> responses = authorService.getAuthorByFirstName(page, size);
+    public ResponseEntity<Page<AuthorSimpleResponse>> getAll(
+            @RequestParam String firstName,
+            @RequestParam String lastName,
+            @RequestParam String country,
+            @RequestParam String city,
+            @RequestParam int page,
+            @RequestParam int size,
+            @RequestParam String sort
+    ) {
+        Page<AuthorSimpleResponse> responses = authorService.getAllAuthors(firstName, lastName, country, city, page, size, sort);
         return ResponseEntity.status(HttpStatus.OK).body(responses);
     }
 

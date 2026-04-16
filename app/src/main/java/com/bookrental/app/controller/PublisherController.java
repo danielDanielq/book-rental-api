@@ -2,15 +2,12 @@ package com.bookrental.app.controller;
 
 import com.bookrental.app.dto.publisherdto.PublisherRequest;
 import com.bookrental.app.dto.publisherdto.PublisherSimpleResponse;
-import com.bookrental.app.repository.PublisherRepository;
 import com.bookrental.app.service.PublisherService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/publishers")
@@ -34,8 +31,12 @@ public class PublisherController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<PublisherSimpleResponse>> getAll(@RequestParam int  page, @RequestParam int size) {
-        Page<PublisherSimpleResponse> responses = publisherService.getAllPublishers(page, size);
+    public ResponseEntity<Page<PublisherSimpleResponse>> getAll(
+            @RequestParam int  page,
+            @RequestParam int size,
+            @RequestParam String sort
+    ) {
+        Page<PublisherSimpleResponse> responses = publisherService.getAllPublishers(page, size, sort);
         return ResponseEntity.status(HttpStatus.OK).body(responses);
     }
 
