@@ -24,7 +24,7 @@ public class BookMapper {
         book.setIsbn(createBookRequest.getIsbn());
         book.setPublishedYear(createBookRequest.getPublishedYear());
         book.setTotalCopies(createBookRequest.getTotalCopies());
-        book.setAvailableCopies(createBookRequest.getTotalCopies()); // Note: this value is the same when added;
+        book.setAvailableCopies(createBookRequest.getTotalCopies()); // Note: this value is the same with total copies when added;
         book.setGenre(createBookRequest.getGenre());
 
         return book;

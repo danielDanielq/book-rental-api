@@ -9,5 +9,4 @@ import java.util.Optional;
 
 @Repository
 public interface BookRepository extends JpaRepository<Book, Long> {
-    <S extends Book> Optional<S> findOne(Example<S> bookSimpleResponseExample);
 }

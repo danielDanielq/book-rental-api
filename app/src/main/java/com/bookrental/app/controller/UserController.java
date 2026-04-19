@@ -21,7 +21,7 @@ public class UserController { // Note: The controller should do little stuff and
     }
 
     @PostMapping("/register")
-    public ResponseEntity<UserDetailedResponse> register(@Valid @RequestBody CreateUserRequest createUserRequest) { // Note: The @Valid adnotation is used to check the internal adnotation explicitly put by the programer, otherwise they will pass;
+    public ResponseEntity<UserDetailedResponse> register(@Valid @RequestBody CreateUserRequest createUserRequest) { // Note: The @Valid adnotation is used to check the internal adnotations explicitly put by the programer, otherwise they will pass;
         UserDetailedResponse userDetailedResponse = userService.createUser(createUserRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(userDetailedResponse);
     }

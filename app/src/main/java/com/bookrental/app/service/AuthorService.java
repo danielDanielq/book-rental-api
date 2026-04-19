@@ -39,8 +39,9 @@ public class AuthorService {
         return AuthorMapper.toSimpleResponse(authorToFind);
     }
 
-    public Page<AuthorSimpleResponse> getAllAuthors(String firstName, String lastName, String country, String city, int page, int size, String sort) { // Note: page number and the entity size;
+    public Page<AuthorSimpleResponse> searchAuthors(String firstName, String lastName, String country, String city, int page, int size, String sort) { // Note: page number and the entity size;
         Author probeAuthor = new Author();
+
         probeAuthor.setFirstName(firstName);
         probeAuthor.setLastName(lastName);
         probeAuthor.setCountry(country);
@@ -50,9 +51,11 @@ public class AuthorService {
                 .withIgnoreCase()
                 .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
 
+        Example<Author> example = Example.of(probeAuthor, matcher);
 
         Pageable pageRequest = PageRequest.of(page, size, Sort.by(sort)); // Note: this is the page request;
-        Page<Author> authorPage = authorRepository.findAll(pageRequest); // Note: asking the db for this exact page which contains a list of the entities;
+        Page<Author> authorPage = authorRepository.findAll(example ,pageRequest); // Note: asking the db for this exact page which contains a list of the entities;
+                                                                                    // Note: searching by the example that contains the rules and exact request params. Spring knows to handle this with findAll(Example<T> example) already. The result is a capable search in only 1 endpoint;
 
         Page<AuthorSimpleResponse> responsePage = authorPage.map(p -> AuthorMapper.toSimpleResponse(p)); // Note: mapping to simple response;
         return responsePage;

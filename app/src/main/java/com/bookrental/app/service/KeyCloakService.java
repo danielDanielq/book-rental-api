@@ -74,7 +74,7 @@ public class KeyCloakService implements AuthService {
         userRepresentation.setLastName(createUserRequest.getLastName());
         userRepresentation.setEnabled(true); // Note: Activate the account otherwise it will be blocked and need the admin to unblock on keycloak UI;
 
-        CredentialRepresentation credentialRepresentation = new CredentialRepresentation(); // Note: Create the password/key(credetial);
+        CredentialRepresentation credentialRepresentation = new CredentialRepresentation(); // Note: Create the password/key(credetials);
         credentialRepresentation.setType(CredentialRepresentation.PASSWORD);
         credentialRepresentation.setValue(createUserRequest.getPassword());
         credentialRepresentation.setTemporary(false); // Note: Otherwise the user will be forced to change password when logging in;

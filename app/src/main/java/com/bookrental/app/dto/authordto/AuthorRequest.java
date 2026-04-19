@@ -13,7 +13,7 @@ public class AuthorRequest {
     private String firstName;
 
     @NotBlank(message = "This field can't be empty")
-    @Size(min = 6, max = 50, message = "Last name size must be between 6 and 50 characters")
+    @Size(min = 2, max = 50, message = "Last name size must be between 2 and 50 characters")
     private String lastName;
 
     @NotBlank(message = "This field can't be empty")

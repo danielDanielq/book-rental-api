@@ -32,11 +32,15 @@ public class PublisherController {
 
     @GetMapping
     public ResponseEntity<Page<PublisherSimpleResponse>> getAll(
-            @RequestParam int  page,
-            @RequestParam int size,
-            @RequestParam String sort
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String email,
+            @RequestParam(required = false) String country,
+            @RequestParam(required = false) String city,
+            @RequestParam(defaultValue = "0") int  page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sort
     ) {
-        Page<PublisherSimpleResponse> responses = publisherService.getAllPublishers(page, size, sort);
+        Page<PublisherSimpleResponse> responses = publisherService.searchPublishers(name, email, country, city, page, size, sort);
         return ResponseEntity.status(HttpStatus.OK).body(responses);
     }
 

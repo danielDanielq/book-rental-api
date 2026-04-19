@@ -16,9 +16,6 @@ import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
-
 @Service
 public class BookService {
     private BookRepository bookRepository;
@@ -57,7 +54,7 @@ public class BookService {
         return BookMapper.toSimpleDTO(bookToFind);
     }
 
-    public Page<BookSimpleResponse> searchBooks(String title, String isbn, Integer publishedYear, Genre genre, int page, int size, String sortBy) { // Note: page number and the entity size;
+    public Page<BookSimpleResponse> searchBooks(String title, String isbn, Integer publishedYear, Genre genre, int page, int size, String sort) { // Note: page number and the entities size is mandatory (to have them non-null);
         Book probeBook = new Book();
 
         probeBook.setTitle(title);
@@ -69,9 +66,9 @@ public class BookService {
                 .withIgnoreCase()
                 .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
 
-        Example<Book> example = Example.of(probeBook, matcher); // Note: Getting the rules and probe in one single example;
+        Example<Book> example = Example.of(probeBook, matcher); // Note: Getting the rules and probe in one single example (parameter);
 
-        Pageable pageRequest = PageRequest.of(page, size, Sort.by(sortBy)); // Note: this is the page request;
+        Pageable pageRequest = PageRequest.of(page, size, Sort.by(sort)); // Note: this is the page request;
         Page<Book> bookPage = bookRepository.findAll(example, pageRequest); // Note: asking the db for this exact page which contains a list of the entities;
                                                                             // Note: searching by the example that contains the rules and exact request params. Spring knows to handle this with findAll(Example<T> example) already. The result is a capable search in only 1 endpoint;
 

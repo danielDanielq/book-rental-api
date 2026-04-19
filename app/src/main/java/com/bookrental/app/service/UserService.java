@@ -28,7 +28,7 @@ public class UserService {
 
         User userToSave = UserMapper.toEntity(createUserRequest);
 
-        User savedUser = userRepository.save(userToSave);
+        User savedUser = userRepository.save(userToSave); // Note: other way around this may result in a bug, because keycloak does not backup when Transactional is running;
         authService.registerUser(createUserRequest); // Note: important for keycloak register;
 
         return UserMapper.toDetailedDTO(savedUser);

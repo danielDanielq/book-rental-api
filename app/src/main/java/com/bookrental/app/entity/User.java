@@ -1,7 +1,6 @@
 package com.bookrental.app.entity;
 
 import com.bookrental.app.enums.Role;
-import com.bookrental.app.enums.Status;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

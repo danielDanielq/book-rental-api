@@ -7,13 +7,9 @@ import com.bookrental.app.exception.AccountAlreadyExists;
 import com.bookrental.app.exception.ResouceNotFoundException;
 import com.bookrental.app.mapper.PublisherMapper;
 import com.bookrental.app.repository.PublisherRepository;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
 
 @Service
 public class PublisherService {
@@ -46,10 +42,23 @@ public class PublisherService {
         return PublisherMapper.toSimpleResponse(publisher);
     }
 
-    public Page<PublisherSimpleResponse> getAllPublishers(int page, int size, String sort) { // Note: page number and the entity size;
-        Pageable pageRequest = PageRequest.of(page, size, Sort.by(sort)); // Note: this is the page request;
-        Page<Publisher> publisherPage = publisherRepository.findAll(pageRequest); // Note: asking the db for this exact page which contains a list of the entities;
+    public Page<PublisherSimpleResponse> searchPublishers(String name, String email, String country, String city, int page, int size, String sort) { // Note: page number and the entity size;
+        Publisher probePublisher = new Publisher();
 
+        probePublisher.setName(name);
+        probePublisher.setEmail(email);
+        probePublisher.setCountry(country);
+        probePublisher.setCity(city);
+
+        ExampleMatcher matcher = ExampleMatcher.matching()
+                .withIgnoreCase()
+                .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
+
+        Example<Publisher> example = Example.of(probePublisher, matcher);
+
+        Pageable pageRequest = PageRequest.of(page, size, Sort.by(sort)); // Note: this is the page request;
+        Page<Publisher> publisherPage = publisherRepository.findAll(example, pageRequest); // Note: asking the db for this exact page which contains a list of the entities;
+                                                                                        // Note: searching by the example that contains the rules and exact request params. Spring knows to handle this with findAll(Example<T> example) already. The result is a capable search in only 1 endpoint;
         Page<PublisherSimpleResponse> responsePage = publisherPage.map(p -> PublisherMapper.toSimpleResponse(p)); // Note: mapping to simple response;
         return  responsePage;
     }

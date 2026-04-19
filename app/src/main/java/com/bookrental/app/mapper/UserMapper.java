@@ -1,7 +1,6 @@
 package com.bookrental.app.mapper;
 
 import com.bookrental.app.dto.addressdto.AddressDto;
-import com.bookrental.app.dto.rentaldto.RentalSimpleResponse;
 import com.bookrental.app.dto.userdto.CreateUserRequest;
 import com.bookrental.app.dto.userdto.UserDetailedResponse;
 import com.bookrental.app.entity.Address;

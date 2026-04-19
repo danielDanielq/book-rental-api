@@ -26,6 +26,7 @@ public class GlobalExceptionHandler{
         );
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
     }
+
     @ExceptionHandler(ResouceNotFoundException.class)
     public ResponseEntity<Map<String, String>> handleResouceNotFound(ResouceNotFoundException exception) {
         String message = exception.getMessage();
