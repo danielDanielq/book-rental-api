@@ -55,4 +55,5 @@ public class UserMapper {
 
         return userDetailedResponse;
     }
+
 }

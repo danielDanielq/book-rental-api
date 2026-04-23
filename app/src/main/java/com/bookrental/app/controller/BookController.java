@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/books")
 public class BookController {
-    private BookService bookService;
+    private final BookService bookService;
 
     public BookController(BookService bookService) {
         this.bookService = bookService;
@@ -40,11 +40,24 @@ public class BookController {
             @RequestParam(required = false) String isbn,
             @RequestParam(required = false) Integer publishedYear,
             @RequestParam(required = false) Genre genre,
+            @RequestParam(required = false) String authorFirstName,
+            @RequestParam(required = false) String authorLastName,
+            @RequestParam(required = false) String publisherName,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "id") String sort
     ) {
-        Page<BookSimpleResponse> response = bookService.searchBooks(title, isbn, publishedYear, genre, page, size, sort);
+        if (page > 100){
+            page = 100;
+        }
+        if (page < 0) {
+            page = 0;
+        }
+        if (size > 100){
+            size = 100;
+        }
+
+        Page<BookSimpleResponse> response = bookService.searchBooks(title, isbn, publishedYear, genre, authorFirstName, authorLastName, publisherName, page, size, sort);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 

@@ -54,13 +54,26 @@ public class BookService {
         return BookMapper.toSimpleDTO(bookToFind);
     }
 
-    public Page<BookSimpleResponse> searchBooks(String title, String isbn, Integer publishedYear, Genre genre, int page, int size, String sort) { // Note: page number and the entities size is mandatory (to have them non-null);
+    public Page<BookSimpleResponse> searchBooks(String title, String isbn, Integer publishedYear, Genre genre, String authorFirstName, String authorLastName, String publisherName, int page, int size, String sort) { // Note: page number and the entities size is mandatory (to have them non-null);
         Book probeBook = new Book();
 
         probeBook.setTitle(title);
         probeBook.setIsbn(isbn);
         probeBook.setPublishedYear(publishedYear);
         probeBook.setGenre(genre);
+
+        if (authorFirstName != null || authorLastName != null || !authorFirstName.isEmpty() || !authorLastName.isEmpty()) {
+            Author probeAuthor = new Author();
+            probeAuthor.setFirstName(authorFirstName);
+            probeAuthor.setLastName(authorLastName);
+            probeBook.setAuthor(probeAuthor);
+        }
+
+        if (publisherName != null || !publisherName.isEmpty()) {
+            Publisher probePublisher = new Publisher();
+            probePublisher.setName(publisherName);
+            probeBook.setPublisher(probePublisher);
+        }
 
         ExampleMatcher matcher = ExampleMatcher.matching() // Note: Using this example matcher helps to search within the data containing the request params;
                 .withIgnoreCase()

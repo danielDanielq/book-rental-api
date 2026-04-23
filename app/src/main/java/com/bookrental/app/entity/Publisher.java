@@ -14,7 +14,7 @@ import java.util.List;
 public class Publisher {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "publisher_id")
+    @Column(name = "id")
     private Long id;
 
     @Column(name = "name", length = 50)

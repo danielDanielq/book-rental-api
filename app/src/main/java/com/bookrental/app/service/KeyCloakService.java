@@ -72,6 +72,8 @@ public class KeyCloakService implements AuthService {
         userRepresentation.setUsername(createUserRequest.getEmail()); // Note: Keycloak looks for a unique username, the e-mail fits perfectly here;
         userRepresentation.setFirstName(createUserRequest.getFirstName());
         userRepresentation.setLastName(createUserRequest.getLastName());
+        userRepresentation.singleAttribute("id", String.valueOf(createUserRequest.getId())); // Note: "id" comes from the User Attribute in the Mapper details;
+        //userRepresentation.setId(String.valueOf(createUserRequest.getId())); Note: this will set the UUID not a personalized atribute;
         userRepresentation.setEnabled(true); // Note: Activate the account otherwise it will be blocked and need the admin to unblock on keycloak UI;
 
         CredentialRepresentation credentialRepresentation = new CredentialRepresentation(); // Note: Create the password/key(credetials);

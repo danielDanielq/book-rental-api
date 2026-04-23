@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/publishers")
 public class PublisherController {
-    private PublisherService publisherService;
+    private final PublisherService publisherService;
 
     public PublisherController(PublisherService publisherService) {
         this.publisherService = publisherService;
@@ -40,6 +40,15 @@ public class PublisherController {
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "id") String sort
     ) {
+        if (page > 100){
+            page = 100;
+        }
+        if (page < 0) {
+            page = 0;
+        }
+        if (size > 100){
+            size = 100;
+        }
         Page<PublisherSimpleResponse> responses = publisherService.searchPublishers(name, email, country, city, page, size, sort);
         return ResponseEntity.status(HttpStatus.OK).body(responses);
     }
