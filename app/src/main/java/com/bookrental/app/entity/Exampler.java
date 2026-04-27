@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @Table(name = "examplers")
 @Getter @Setter @NoArgsConstructor
@@ -24,7 +26,10 @@ public class Exampler {
     @ManyToOne(
             fetch = FetchType.LAZY
     )
-    @JoinColumn(name = "publisher_id")
-    private Publisher publisher;
+    @JoinColumn(name = "library_id")
+    private Library library;
+
+    @OneToMany(mappedBy = "exampler")
+    private List<Rental> rentals;
 
 }

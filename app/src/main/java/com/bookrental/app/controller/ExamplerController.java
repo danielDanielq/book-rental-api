@@ -1,6 +1,5 @@
 package com.bookrental.app.controller;
 
-import com.bookrental.app.service.BookService;
 import com.bookrental.app.service.ExamplerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

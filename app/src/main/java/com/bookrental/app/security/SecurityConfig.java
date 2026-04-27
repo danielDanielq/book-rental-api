@@ -1,5 +1,6 @@
 package com.bookrental.app.security;
 
+import com.bookrental.app.exception.ResouceNotFoundException;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
@@ -7,8 +8,8 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
@@ -42,4 +43,20 @@ public class SecurityConfig {
 
         return converter;
     }
+
+    public static Long getcurrentUserId() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (principal instanceof Jwt jwt) {
+            Object userId = jwt.getClaim("user_id");
+
+            if (userId != null) {
+                return Long.valueOf(userId.toString());
+            }
+        }
+
+        throw new ResouceNotFoundException("Failed to extract the user id from the JWT access-Token");
+    }
+
+
 }

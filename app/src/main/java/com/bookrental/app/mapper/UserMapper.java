@@ -3,6 +3,7 @@ package com.bookrental.app.mapper;
 import com.bookrental.app.dto.addressdto.AddressDto;
 import com.bookrental.app.dto.userdto.CreateUserRequest;
 import com.bookrental.app.dto.userdto.UserDetailedResponse;
+import com.bookrental.app.dto.userdto.UserSimpleResponse;
 import com.bookrental.app.entity.Address;
 import com.bookrental.app.entity.Rental;
 import com.bookrental.app.entity.User;
@@ -50,10 +51,20 @@ public class UserMapper {
         userDetailedResponse.setAddress(addressDto);
 
         for (Rental rental : user.getRentals()) {
-            userDetailedResponse.getRentals().add(RentalMapper.toSimpleDTO(rental));
+            userDetailedResponse.getRentals().add(RentalMapper.toSimpleResponse(rental));
         }
 
         return userDetailedResponse;
+    }
+
+    public static UserSimpleResponse toSimpleResponse(User user) {
+        UserSimpleResponse userSimpleResponse = new UserSimpleResponse();
+        userSimpleResponse.setId(user.getId());
+        userSimpleResponse.setFirstName(user.getFirstName());
+        userSimpleResponse.setLastName(user.getLastName());
+        userSimpleResponse.setEmail(user.getEmail());
+
+        return userSimpleResponse;
     }
 
 }

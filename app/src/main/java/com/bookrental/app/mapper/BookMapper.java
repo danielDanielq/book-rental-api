@@ -5,7 +5,7 @@ import com.bookrental.app.dto.bookdto.CreateBookRequest;
 import com.bookrental.app.entity.Book;
 
 public class BookMapper {
-    public static BookSimpleResponse toSimpleDTO(Book book) {
+    public static BookSimpleResponse toSimpleResponse(Book book) {
         BookSimpleResponse bookSimpleResponse = new BookSimpleResponse();
         bookSimpleResponse.setId(book.getId());
         bookSimpleResponse.setTitle(book.getTitle());

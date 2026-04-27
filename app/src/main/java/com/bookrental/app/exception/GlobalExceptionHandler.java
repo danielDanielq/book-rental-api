@@ -6,6 +6,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.rmi.AlreadyBoundException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,6 +32,24 @@ public class GlobalExceptionHandler{
     public ResponseEntity<Map<String, String>> handleResouceNotFound(ResouceNotFoundException exception) {
         String message = exception.getMessage();
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", message));
+    }
+
+    @ExceptionHandler(DateOutOfBoundsException.class)
+    public ResponseEntity<Map<String, String>> handleExceptionDateOutOfBounds(Exception exception) {
+        String message = exception.getMessage();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", message));
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<Map<String, String>> handleExceptionAccessDenied(AccessDeniedException exception) {
+        String message = exception.getMessage();
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("error", message));
+    }
+
+    @ExceptionHandler(BookAlreadyReturnedException.class)
+    public ResponseEntity<Map<String, String>> handleAlreadyBoundException(BookAlreadyReturnedException exception) {
+        String message = exception.getMessage();
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("error", message));
     }
 
 }

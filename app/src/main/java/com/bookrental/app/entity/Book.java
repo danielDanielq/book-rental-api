@@ -42,30 +42,10 @@ public class Book {
     @Column(name = "genre", nullable = false, length = 50)
     private Genre genre;
 
-    @OneToMany(
-            mappedBy = "book",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true,
-            fetch = FetchType.LAZY
-    )
-    private List<Rental> rentals;
-
     @ManyToOne(
             fetch = FetchType.LAZY
     )
     @JoinColumn(name = "publisher_id", nullable = false)
     private Publisher publisher;
 
-    public List<Rental> getRentals() {return rentals;}
-    public void setRentals(List<Rental> rentals) {this.rentals = rentals;}
-
-    public void addRental(Rental rental) {
-        rentals.add(rental);
-        rental.setBook(this);
-    }
-
-    public void removeRental(Rental rental) {
-        rentals.remove(rental);
-        rental.setBook(null);
-    }
 }

@@ -43,7 +43,7 @@ public class BookService {
         publisher.addBook(book);
 
         Book savedBook = bookRepository.save(book);
-        return BookMapper.toSimpleDTO(savedBook);
+        return BookMapper.toSimpleResponse(savedBook);
     }
 
     public BookSimpleResponse getBookById(Long id) {
@@ -51,7 +51,7 @@ public class BookService {
                 () -> new ResouceNotFoundException("The book is missing from the database")// Note: Fail-Fast
         );
 
-        return BookMapper.toSimpleDTO(bookToFind);
+        return BookMapper.toSimpleResponse(bookToFind);
     }
 
     public Page<BookSimpleResponse> searchBooks(String title, String isbn, Integer publishedYear, Genre genre, String authorFirstName, String authorLastName, String publisherName, int page, int size, String sort) { // Note: page number and the entities size is mandatory (to have them non-null);
@@ -85,7 +85,7 @@ public class BookService {
         Page<Book> bookPage = bookRepository.findAll(example, pageRequest); // Note: asking the db for this exact page which contains a list of the entities;
                                                                             // Note: searching by the example that contains the rules and exact request params. Spring knows to handle this with findAll(Example<T> example) already. The result is a capable search in only 1 endpoint;
 
-        Page<BookSimpleResponse> responsePage = bookPage.map(book -> BookMapper.toSimpleDTO(book)); // Note: mapping to simple response;
+        Page<BookSimpleResponse> responsePage = bookPage.map(book -> BookMapper.toSimpleResponse(book)); // Note: mapping to simple response;
         return responsePage;
     }
 
@@ -99,7 +99,7 @@ public class BookService {
         bookToUpdate.setGenre(bookRequest.getGenre());
 
         //Book savedBook = bookRepository.save(bookToUpdate);    Note: @Transactional & .set will automaticly update the db, no need for this line anymore;
-        return BookMapper.toSimpleDTO(bookToUpdate);
+        return BookMapper.toSimpleResponse(bookToUpdate);
     }
 
     @Transactional
