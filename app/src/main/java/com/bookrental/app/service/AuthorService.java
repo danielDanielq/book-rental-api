@@ -3,7 +3,7 @@ package com.bookrental.app.service;
 import com.bookrental.app.dto.authordto.AuthorRequest;
 import com.bookrental.app.dto.authordto.AuthorSimpleResponse;
 import com.bookrental.app.entity.Author;
-import com.bookrental.app.exception.AccountAlreadyExists;
+import com.bookrental.app.exception.AccountAlreadyExistsException;
 import com.bookrental.app.exception.ResouceNotFoundException;
 import com.bookrental.app.mapper.AuthorMapper;
 import com.bookrental.app.repository.AuthorRepository;
@@ -22,7 +22,7 @@ public class AuthorService {
     @Transactional
     public AuthorSimpleResponse createAuthor(AuthorRequest authorRequest) {
         if (authorRepository.findByFirstNameAndLastName(authorRequest.getFirstName(), authorRequest.getLastName()).isPresent()) { // Note: Fail-Fast
-            throw new AccountAlreadyExists("There is already an author with this name");
+            throw new AccountAlreadyExistsException("There is already an author with this name");
         }
 
         Author authorToSave = AuthorMapper.toEntity(authorRequest);

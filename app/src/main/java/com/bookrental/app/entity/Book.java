@@ -1,12 +1,10 @@
 package com.bookrental.app.entity;
 
-import com.bookrental.app.enums.Genre;
+import com.bookrental.app.enums.BookGenre;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.List;
 
 @Entity
 @Table(name = "books")
@@ -40,7 +38,7 @@ public class Book {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "genre", nullable = false, length = 50)
-    private Genre genre;
+    private BookGenre genre;
 
     @ManyToOne(
             fetch = FetchType.LAZY

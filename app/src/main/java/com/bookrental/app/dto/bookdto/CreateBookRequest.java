@@ -1,6 +1,6 @@
 package com.bookrental.app.dto.bookdto;
 
-import com.bookrental.app.enums.Genre;
+import com.bookrental.app.enums.BookGenre;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -23,5 +23,5 @@ public class CreateBookRequest {
     @NotNull(message = "This field is required")
     private Integer totalCopies;
 
-    private Genre genre;
+    private BookGenre genre;
 }

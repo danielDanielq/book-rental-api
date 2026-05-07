@@ -3,7 +3,7 @@ package com.bookrental.app.service;
 import com.bookrental.app.dto.publisherdto.PublisherRequest;
 import com.bookrental.app.dto.publisherdto.PublisherSimpleResponse;
 import com.bookrental.app.entity.Publisher;
-import com.bookrental.app.exception.AccountAlreadyExists;
+import com.bookrental.app.exception.AccountAlreadyExistsException;
 import com.bookrental.app.exception.ResouceNotFoundException;
 import com.bookrental.app.mapper.PublisherMapper;
 import com.bookrental.app.repository.PublisherRepository;
@@ -22,11 +22,11 @@ public class PublisherService {
     @Transactional
     public PublisherSimpleResponse createPublisher(PublisherRequest publisherRequest) {
         if (publisherRepository.findByEmail(publisherRequest.getEmail()).isPresent()) { // Note: Fail-Fast
-            throw new AccountAlreadyExists("There is already a publisher with this name");
+            throw new AccountAlreadyExistsException("There is already a publisher with this name");
         }
 
         if (publisherRepository.findByName(publisherRequest.getName()).isPresent()) { // Note: Fail-Fast
-            throw new AccountAlreadyExists("There is already a publisher with this name");
+            throw new AccountAlreadyExistsException("There is already a publisher with this name");
         }
 
         Publisher publisherToSave = PublisherMapper.toEntity(publisherRequest);

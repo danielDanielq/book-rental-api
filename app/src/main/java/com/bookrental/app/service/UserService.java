@@ -3,10 +3,11 @@ package com.bookrental.app.service;
 import com.bookrental.app.dto.userdto.CreateUserRequest;
 import com.bookrental.app.dto.userdto.UserDetailedResponse;
 import com.bookrental.app.entity.User;
-import com.bookrental.app.exception.EmailAlreadyInUse;
+import com.bookrental.app.exception.EmailAlreadyInUseException;
 import com.bookrental.app.mapper.UserMapper;
 import com.bookrental.app.repository.UserRepository;
 import com.bookrental.app.service.interfaces.AuthService;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,7 +24,7 @@ public class UserService {
     @Transactional
     public UserDetailedResponse createUser (CreateUserRequest createUserRequest) {
         if (userRepository.findByEmail(createUserRequest.getEmail()).isPresent()) { // Note: Fail-Fast
-            throw new EmailAlreadyInUse("E-mail already in use.");
+            throw new EmailAlreadyInUseException("E-mail already in use.");
         }
 
         User userToSave = UserMapper.toEntity(createUserRequest);
@@ -34,4 +35,5 @@ public class UserService {
 
         return UserMapper.toDetailedDTO(savedUser);
     }
+
 }

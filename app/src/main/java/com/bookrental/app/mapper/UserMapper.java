@@ -7,7 +7,7 @@ import com.bookrental.app.dto.userdto.UserSimpleResponse;
 import com.bookrental.app.entity.Address;
 import com.bookrental.app.entity.Rental;
 import com.bookrental.app.entity.User;
-import com.bookrental.app.enums.Role;
+import com.bookrental.app.enums.UserRoles;
 import com.bookrental.app.exception.NoAddressInRequestException;
 
 public class UserMapper {
@@ -16,7 +16,7 @@ public class UserMapper {
         user.setFirstName(createUserRequest.getFirstName());
         user.setLastName(createUserRequest.getLastName());
         user.setEmail(createUserRequest.getEmail());
-        user.setRole(Role.CLIENT); // Note: this is important otherwise it will crash because of "nullable = false" from the entity itself and every user to register will be a .CLIENT;
+        user.setRole(UserRoles.CLIENT); // Note: this is important otherwise it will crash because of "nullable = false" from the entity itself and every user to register will be a .CLIENT;
 
         if (createUserRequest.getAddress() == null) {
             throw new NoAddressInRequestException("Address is null.");

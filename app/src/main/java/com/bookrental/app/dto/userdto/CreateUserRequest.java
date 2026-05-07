@@ -1,11 +1,10 @@
 package com.bookrental.app.dto.userdto;
 
 import com.bookrental.app.dto.addressdto.AddressDto;
-import com.bookrental.app.enums.Role;
+import com.bookrental.app.enums.UserRoles;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,5 +25,5 @@ public class CreateUserRequest {
     private String password;
     @Valid
     private AddressDto address;
-    private Role role;
+    private UserRoles role;
 }

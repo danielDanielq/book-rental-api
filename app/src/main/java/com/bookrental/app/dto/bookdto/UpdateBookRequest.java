@@ -1,6 +1,6 @@
 package com.bookrental.app.dto.bookdto;
 
-import com.bookrental.app.enums.Genre;
+import com.bookrental.app.enums.BookGenre;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -16,5 +16,5 @@ public class UpdateBookRequest { // Note: This DTO will not let the update endpo
     private Integer publishedYear;
 
     @NotNull(message = "Genre is required")
-    private Genre genre;
+    private BookGenre genre;
 }

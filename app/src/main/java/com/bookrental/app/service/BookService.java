@@ -6,7 +6,7 @@ import com.bookrental.app.dto.bookdto.UpdateBookRequest;
 import com.bookrental.app.entity.Author;
 import com.bookrental.app.entity.Book;
 import com.bookrental.app.entity.Publisher;
-import com.bookrental.app.enums.Genre;
+import com.bookrental.app.enums.BookGenre;
 import com.bookrental.app.exception.ResouceNotFoundException;
 import com.bookrental.app.mapper.BookMapper;
 import com.bookrental.app.repository.AuthorRepository;
@@ -54,7 +54,7 @@ public class BookService {
         return BookMapper.toSimpleResponse(bookToFind);
     }
 
-    public Page<BookSimpleResponse> searchBooks(String title, String isbn, Integer publishedYear, Genre genre, String authorFirstName, String authorLastName, String publisherName, int page, int size, String sort) { // Note: page number and the entities size is mandatory (to have them non-null);
+    public Page<BookSimpleResponse> searchBooks(String title, String isbn, Integer publishedYear, BookGenre genre, String authorFirstName, String authorLastName, String publisherName, int page, int size, String sort) { // Note: page number and the entities size is mandatory (to have them non-null);
         Book probeBook = new Book();
 
         probeBook.setTitle(title);

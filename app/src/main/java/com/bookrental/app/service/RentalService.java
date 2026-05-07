@@ -10,10 +10,12 @@ import com.bookrental.app.exception.ResouceNotFoundException;
 import com.bookrental.app.mapper.RentalMapper;
 import com.bookrental.app.repository.*;
 import com.bookrental.app.security.SecurityConfig;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -41,9 +43,9 @@ public class RentalService {
             LocalDate requestedEndDate) {
 
 
-        if (requestedStartDate.isBefore(LocalDate.now())) {
-            throw new DateOutOfBoundsException("The introduced dates are out of bounds");
-        }
+//        if (requestedStartDate.isBefore(LocalDate.now())) {
+//            throw new DateOutOfBoundsException("The introduced dates are out of bounds");
+//        }
 
         if (requestedEndDate.isBefore(requestedStartDate) || requestedEndDate.isEqual(requestedStartDate)) {
             throw new DateOutOfBoundsException("The introduced dates are out of bounds");
@@ -67,6 +69,7 @@ public class RentalService {
         }
 
         Exampler examplerToRent = examplersToRent.get(0);
+        examplerToRent.setUpdateTime(LocalDateTime.now());
 
         Rental rental = new Rental();
         rental.setStartDate(requestedStartDate);
@@ -76,7 +79,6 @@ public class RentalService {
         rental.setExampler(examplerToRent);
 
         Rental savedRental = rentalRepository.save(rental);
-
         return RentalMapper.toSimpleResponse(savedRental);
     }
 
@@ -102,6 +104,30 @@ public class RentalService {
 
         return RentalMapper.toSimpleResponse(rentalToFind);
     }
+
+    public Page<RentalSimpleResponse> searchRentals(LocalDate startDate, LocalDate endDate, LocalDate returnDate, RentalStatus rentalStatus, String userEmail, String bookTitle, String libraryName, int page, int size, String sort) {
+        Rental probeRental = new Rental();
+
+        probeRental.setStartDate(startDate);
+        probeRental.setEndDate(endDate);
+        probeRental.setReturnDate(returnDate);
+        probeRental.setRentalStatus(rentalStatus);
+        probeRental.getUser().setEmail(userEmail);
+        probeRental.getExampler().getBook().setTitle(bookTitle);
+        probeRental.getExampler().getLibrary().setName(libraryName);
+
+        ExampleMatcher matcher = ExampleMatcher.matching()
+                .withIgnoreCase()
+                .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
+
+        Example<Rental> example = Example.of(probeRental, matcher   );
+        Pageable pageRequest = PageRequest.of(page, size, Sort.by(sort));
+        Page<Rental> rentalPage = rentalRepository.findAll(example, pageRequest);
+
+        Page<RentalSimpleResponse> responsePage = rentalPage.map(p -> RentalMapper.toSimpleResponse(p));
+        return responsePage;
+    }
+
 
 
 }

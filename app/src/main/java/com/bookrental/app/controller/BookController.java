@@ -3,7 +3,7 @@ package com.bookrental.app.controller;
 import com.bookrental.app.dto.bookdto.BookSimpleResponse;
 import com.bookrental.app.dto.bookdto.CreateBookRequest;
 import com.bookrental.app.dto.bookdto.UpdateBookRequest;
-import com.bookrental.app.enums.Genre;
+import com.bookrental.app.enums.BookGenre;
 import com.bookrental.app.service.BookService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -39,7 +39,7 @@ public class BookController {
             @RequestParam(required = false) String title,
             @RequestParam(required = false) String isbn,
             @RequestParam(required = false) Integer publishedYear,
-            @RequestParam(required = false) Genre genre,
+            @RequestParam(required = false) BookGenre genre,
             @RequestParam(required = false) String authorFirstName,
             @RequestParam(required = false) String authorLastName,
             @RequestParam(required = false) String publisherName,

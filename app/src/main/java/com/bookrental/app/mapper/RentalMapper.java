@@ -1,9 +1,7 @@
 package com.bookrental.app.mapper;
 
-import com.bookrental.app.dto.bookdto.BookSimpleResponse;
 import com.bookrental.app.dto.rentaldto.RentalRequest;
 import com.bookrental.app.dto.rentaldto.RentalSimpleResponse;
-import com.bookrental.app.dto.userdto.UserSimpleResponse;
 import com.bookrental.app.entity.Rental;
 
 public class RentalMapper {

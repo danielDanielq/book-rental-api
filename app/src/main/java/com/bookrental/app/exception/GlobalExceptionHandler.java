@@ -6,15 +6,14 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.rmi.AlreadyBoundException;
 import java.util.HashMap;
 import java.util.Map;
 
 @RestControllerAdvice // Note: Error in one of the controller? This will catch it and send it in a JSON format;
 public class GlobalExceptionHandler{
 
-    @ExceptionHandler(EmailAlreadyInUse.class) // Note: This will automaticly catch the EmailAlreadyInUse exception;
-    public ResponseEntity<Map<String, String>> handleEmailAlreadyInUse(EmailAlreadyInUse exception) {
+    @ExceptionHandler(EmailAlreadyInUseException.class) // Note: This will automaticly catch the EmailAlreadyInUse exception;
+    public ResponseEntity<Map<String, String>> handleEmailAlreadyInUse(EmailAlreadyInUseException exception) {
         String message = exception.getMessage();
         return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("error", message)); // Note: We want to respond with a key-value Map so that the Client(Postman/Frontend) gets a nice JSON;
     }

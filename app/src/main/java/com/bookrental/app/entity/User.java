@@ -1,6 +1,6 @@
 package com.bookrental.app.entity;
 
-import com.bookrental.app.enums.Role;
+import com.bookrental.app.enums.UserRoles;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,7 +29,7 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false, length = 50)
-    private Role role;
+    private UserRoles role;
 
     @OneToOne(
             cascade = CascadeType.ALL,

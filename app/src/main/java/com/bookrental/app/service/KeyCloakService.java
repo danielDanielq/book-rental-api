@@ -1,8 +1,8 @@
 package com.bookrental.app.service;
 
 import com.bookrental.app.dto.userdto.CreateUserRequest;
-import com.bookrental.app.enums.Role;
-import com.bookrental.app.exception.AccountAlreadyExists;
+import com.bookrental.app.enums.UserRoles;
+import com.bookrental.app.exception.AccountAlreadyExistsException;
 import com.bookrental.app.service.interfaces.AuthService;
 import jakarta.annotation.PostConstruct;
 import jakarta.ws.rs.core.Response;
@@ -86,11 +86,11 @@ public class KeyCloakService implements AuthService {
         Response response = keycloakAdmin.realm(realm).users().create(userRepresentation); // Note: KeyCloak comunication with the backend is actually an HTTP client under the hood. Sending the POST request and the response is saved here;
 
         if (response.getStatus() != 201) { // Note: for e-mail already in use there is 409 (Conflict) error type;
-            throw new AccountAlreadyExists("?Account already registered?: " + response.getStatus());
+            throw new AccountAlreadyExistsException("?Account already registered?: " + response.getStatus());
         }
 
         String userId = CreatedResponseUtil.getCreatedId(response); // Note: the response (from keycloak) will have the HTTP header containing a UUID (keycloak id of the user);
-        RoleRepresentation role = keycloakAdmin.realm(realm).roles().get(Role.CLIENT.getType()).toRepresentation(); // Note: get the role mapped to DTO specific for keycloak (Representation). We force the Role to CLIENT for security reasons;
+        RoleRepresentation role = keycloakAdmin.realm(realm).roles().get(UserRoles.CLIENT.getType()).toRepresentation(); // Note: get the role mapped to DTO specific for keycloak (Representation). We force the Role to CLIENT for security reasons;
         keycloakAdmin.realm(realm).users().get(userId).roles().realmLevel().add(Collections.singletonList(role)); // Note: set the role in the keycloak using the UUID;
 
         response.close(); // Note: close the HTTP conection;

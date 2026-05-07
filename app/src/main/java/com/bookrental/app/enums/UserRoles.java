@@ -1,13 +1,13 @@
 package com.bookrental.app.enums;
 
-public enum Role {
+public enum UserRoles {
     CLIENT("user"),
     ADMIN("admin"),
     LIBRARIAN("librarian");
 
     private final String type;
 
-    Role(String type) {
+    UserRoles(String type) {
         this.type = type;
     }
 

@@ -3,8 +3,7 @@ package com.bookrental.app.service;
 import com.bookrental.app.dto.librarydto.LibraryRequest;
 import com.bookrental.app.dto.librarydto.LibrarySimpleResponse;
 import com.bookrental.app.entity.Library;
-import com.bookrental.app.exception.AccountAlreadyExists;
-import com.bookrental.app.mapper.LibrarianMapper;
+import com.bookrental.app.exception.AccountAlreadyExistsException;
 import com.bookrental.app.mapper.LibraryMapper;
 import com.bookrental.app.repository.LibraryRepository;
 import jakarta.transaction.Transactional;
@@ -22,7 +21,7 @@ public class LibraryService {
     @Transactional
     public LibrarySimpleResponse createLibrary(LibraryRequest libraryRequest) {
         if (libraryRepository.findByName(libraryRequest.getName()).isPresent()) {
-            throw new AccountAlreadyExists("Library already exists");
+            throw new AccountAlreadyExistsException("Library already exists");
         }
 
         Library toSaveLibrary = LibraryMapper.toEntity(libraryRequest);
