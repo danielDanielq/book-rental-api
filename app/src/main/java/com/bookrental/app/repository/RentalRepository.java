@@ -13,7 +13,7 @@ import java.util.List;
 
 @Repository
 public interface RentalRepository extends JpaRepository<Rental, Long> {
-
+    // Note: !! If you use multiple JOINs you can get into a big cartesian multiplier and 10 pieces page will fail !!
     @Query("""
             SELECT r FROM Rental AS r
             JOIN FETCH r.exampler AS e JOIN FETCH e.book JOIN FETCH e.library JOIN FETCH r.user

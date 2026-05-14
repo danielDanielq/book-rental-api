@@ -2,12 +2,14 @@ package com.bookrental.app.controller;
 
 import com.bookrental.app.dto.rentaldto.RentalRequest;
 import com.bookrental.app.dto.rentaldto.RentalSimpleResponse;
+import com.bookrental.app.dto.validation.OrderedValidation;
 import com.bookrental.app.enums.RentalStatus;
 import com.bookrental.app.service.RentalService;
-import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -21,11 +23,12 @@ public class RentalController {
         this.rentalService = rentalService;
     }
 
+    // Note: @Validated works as well as a Fail-Fast;
     @PostMapping("/books/{bookId}/library/{libraryId}")
     public ResponseEntity<RentalSimpleResponse> insertRental(
             @PathVariable Long bookId,
             @PathVariable Long libraryId,
-            @Valid @RequestBody RentalRequest rentalRequest) {
+            @Validated(OrderedValidation.class) @RequestBody RentalRequest rentalRequest) {
 
         RentalSimpleResponse simpleResponse = rentalService.createRental(bookId, libraryId, rentalRequest.getStartDate(), rentalRequest.getEndDate());
         return ResponseEntity.status(HttpStatus.CREATED).body(simpleResponse);
@@ -62,6 +65,16 @@ public class RentalController {
 
         Page<RentalSimpleResponse> responses = rentalService.searchRentals(startDate, endDate, returnDate, rentalStatus, userEmail, bookTitle, libraryName, page, size, sort);
         return ResponseEntity.status(HttpStatus.OK).body(responses);
+    }
+
+    @PatchMapping("/{rentalId}/status")
+    @PreAuthorize("hasAuthority('ROLE_realm_librarian')")
+    public ResponseEntity<RentalSimpleResponse> updateRental(
+            @PathVariable Long rentalId,
+            @RequestParam RentalStatus rentalStatus
+            ) {
+        RentalSimpleResponse response = rentalService.updateRentalStatus(rentalId, rentalStatus);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
 }

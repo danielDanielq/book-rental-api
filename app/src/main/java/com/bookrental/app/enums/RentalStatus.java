@@ -1,5 +1,8 @@
 package com.bookrental.app.enums;
 
+// Note: Finite State Machine (FSM), limited states and strict transaction between states;
+// Note: This will also represent an Audit Trial, one FINISHED rental does not modify or delete! It is a proof that the transaction had taken place;
+// Analogy: think it as a butterfly life span (Cocoon -> Caterpillar -> Butterfly) = 1 proof;
 public enum RentalStatus {
     PENDING{
         @Override
@@ -22,7 +25,7 @@ public enum RentalStatus {
     DELAYED {
         @Override
         public boolean isNextStatePossible(RentalStatus rentalStatus) {
-            return false;
+            return (rentalStatus.equals(FINISHED) || rentalStatus.equals(CANCELED));
         }
     },
     CANCELED {

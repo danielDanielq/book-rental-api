@@ -3,10 +3,7 @@ package com.bookrental.app.service;
 import com.bookrental.app.dto.rentaldto.RentalSimpleResponse;
 import com.bookrental.app.entity.*;
 import com.bookrental.app.enums.RentalStatus;
-import com.bookrental.app.exception.AccessDeniedException;
-import com.bookrental.app.exception.BookAlreadyReturnedException;
-import com.bookrental.app.exception.DateOutOfBoundsException;
-import com.bookrental.app.exception.ResouceNotFoundException;
+import com.bookrental.app.exception.*;
 import com.bookrental.app.mapper.RentalMapper;
 import com.bookrental.app.repository.*;
 import com.bookrental.app.security.SecurityConfig;
@@ -128,6 +125,24 @@ public class RentalService {
         return responsePage;
     }
 
+    @Transactional
+    public RentalSimpleResponse updateRentalStatus(Long rentalId, RentalStatus targetStatus) {
+        Rental rentalToFind = rentalRepository.findById(rentalId).orElseThrow(
+                () -> new ResouceNotFoundException("Rental with id " + rentalId + " not found")
+        );
+
+        RentalStatus currentStatus = rentalToFind.getRentalStatus();
+        if (!currentStatus.isNextStatePossible(targetStatus)) {
+            throw new NotAllowedToUpdateException("Not allowed to update (end or forbidden state machine)");
+        }
+
+        rentalToFind.setRentalStatus(targetStatus);
+        if(targetStatus.equals(RentalStatus.FINISHED)) {
+            rentalToFind.setReturnDate(LocalDate.now());
+        }
+
+        return RentalMapper.toSimpleResponse(rentalToFind);
+    }
 
 
 }

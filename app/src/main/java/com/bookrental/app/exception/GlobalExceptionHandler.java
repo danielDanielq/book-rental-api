@@ -51,4 +51,10 @@ public class GlobalExceptionHandler{
         return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("error", message));
     }
 
+    @ExceptionHandler(NotAllowedToUpdateException.class)
+    public ResponseEntity<Map<String, String>> handleNotAllowedToUpdateException(NotAllowedToUpdateException exception) {
+        String message = exception.getMessage();
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("error", message));
+    }
+
 }
