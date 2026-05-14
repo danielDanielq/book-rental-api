@@ -1,5 +1,6 @@
 package com.bookrental.app.service;
 
+import com.bookrental.app.dto.authordto.AuthorBadResponse;
 import com.bookrental.app.dto.authordto.AuthorRequest;
 import com.bookrental.app.dto.authordto.AuthorSimpleResponse;
 import com.bookrental.app.entity.Author;
@@ -83,6 +84,15 @@ public class AuthorService {
 
         authorRepository.delete(authorToDelete);
         return AuthorMapper.toSimpleResponse(authorToDelete);
+    }
+
+    @Transactional
+    public AuthorBadResponse getAuthorByIdBAD(Long authorId) {
+        Author authorToFind = authorRepository.findById(authorId).orElseThrow(
+                () -> new ResouceNotFoundException("The author is missing from the database")
+        );
+
+        return AuthorMapper.toBadResponse(authorToFind);
     }
 
 }

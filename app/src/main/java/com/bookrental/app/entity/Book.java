@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "books")
 @Getter @Setter @NoArgsConstructor
@@ -40,10 +43,20 @@ public class Book {
     @Column(name = "genre", nullable = false, length = 50)
     private BookGenre genre;
 
+    @Column(name = "rental_contor", nullable = false)
+    private Integer rentalContor = 0;
+
     @ManyToOne(
             fetch = FetchType.LAZY
     )
     @JoinColumn(name = "publisher_id", nullable = false)
     private Publisher publisher;
 
+    @OneToMany( // Note: 1 book = more wishlist for different users;
+            mappedBy = "book",
+            cascade = CascadeType.PERSIST, // Note: if
+            orphanRemoval = true,
+            fetch = FetchType.LAZY
+    )
+    private List<Wishlist> wishlists = new ArrayList<>();
 }

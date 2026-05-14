@@ -1,6 +1,5 @@
 package com.bookrental.app.repository;
 
-import com.bookrental.app.entity.Exampler;
 import com.bookrental.app.entity.Rental;
 import com.bookrental.app.enums.RentalStatus;
 import org.springframework.data.jpa.repository.JpaRepository;

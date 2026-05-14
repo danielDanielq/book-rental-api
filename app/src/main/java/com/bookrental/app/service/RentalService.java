@@ -1,7 +1,10 @@
 package com.bookrental.app.service;
 
+import com.bookrental.app.entity.Book;
+import com.bookrental.app.entity.Exampler;
+import com.bookrental.app.entity.Rental;
+import com.bookrental.app.entity.User;
 import com.bookrental.app.dto.rentaldto.RentalSimpleResponse;
-import com.bookrental.app.entity.*;
 import com.bookrental.app.enums.RentalStatus;
 import com.bookrental.app.exception.*;
 import com.bookrental.app.mapper.RentalMapper;
@@ -74,6 +77,10 @@ public class RentalService {
         rental.setRentalStatus(RentalStatus.PENDING);
         rental.setUser(user);
         rental.setExampler(examplerToRent);
+
+        Book book = rental.getExampler().getBook();
+        // Note: incremating the rental contor; not that bad for timing issue;
+        book.setRentalContor(book.getRentalContor() + 1);
 
         Rental savedRental = rentalRepository.save(rental);
         return RentalMapper.toSimpleResponse(savedRental);

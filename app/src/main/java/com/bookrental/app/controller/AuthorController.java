@@ -1,5 +1,6 @@
 package com.bookrental.app.controller;
 
+import com.bookrental.app.dto.authordto.AuthorBadResponse;
 import com.bookrental.app.dto.authordto.AuthorRequest;
 import com.bookrental.app.dto.authordto.AuthorSimpleResponse;
 import com.bookrental.app.service.AuthorService;
@@ -63,6 +64,12 @@ public class AuthorController {
     public ResponseEntity<Void> delete(@PathVariable Long authorId) {
         authorService.deleteAuthorById(authorId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @GetMapping("/bad/{authorId}")
+    public ResponseEntity<AuthorBadResponse> getAuthorByIdBADex(@PathVariable Long authorId) {
+        AuthorBadResponse response = authorService.getAuthorByIdBAD(authorId);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
 }

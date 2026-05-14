@@ -1,5 +1,6 @@
 package com.bookrental.app.mapper;
 
+import com.bookrental.app.dto.authordto.AuthorBadResponse;
 import com.bookrental.app.dto.authordto.AuthorRequest;
 import com.bookrental.app.dto.authordto.AuthorSimpleResponse;
 import com.bookrental.app.entity.Author;
@@ -24,5 +25,17 @@ public class AuthorMapper {
         author.setCity(authorRequest.getCity());
 
         return author;
+    }
+
+    public static AuthorBadResponse toBadResponse(Author author){
+        AuthorBadResponse authorBadResponse = new AuthorBadResponse();
+        authorBadResponse.setId(author.getId());
+        authorBadResponse.setFirstName(author.getFirstName());
+        authorBadResponse.setLastName(author.getLastName());
+        authorBadResponse.setCountry(author.getCountry());
+        authorBadResponse.setCity(author.getCity());
+        authorBadResponse.setBooks(author.getBooks()); // Note: Here will be eager even if we have .lazy
+
+        return authorBadResponse;
     }
 }

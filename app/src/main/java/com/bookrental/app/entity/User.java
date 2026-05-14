@@ -46,6 +46,19 @@ public class User {
     )
     private List<Rental> rentals = new ArrayList<>();
 
+    @OneToMany( // Note: 1 user = more wishlists
+            mappedBy = "user",
+            cascade = CascadeType.PERSIST,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY
+    )
+    private List<Wishlist> wishlists = new ArrayList<>();
+
+    @OneToOne(
+            mappedBy = "user"
+    )
+    private Review review;
+
     public Address getAddress() {return address;}
     public void setAddress(Address address) {
         this.address = address;

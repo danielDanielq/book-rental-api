@@ -7,7 +7,6 @@ import com.bookrental.app.exception.EmailAlreadyInUseException;
 import com.bookrental.app.mapper.UserMapper;
 import com.bookrental.app.repository.UserRepository;
 import com.bookrental.app.service.interfaces.AuthService;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
