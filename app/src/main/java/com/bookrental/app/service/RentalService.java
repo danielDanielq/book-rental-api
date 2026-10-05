@@ -1,9 +1,6 @@
 package com.bookrental.app.service;
 
-import com.bookrental.app.entity.Book;
-import com.bookrental.app.entity.Exampler;
-import com.bookrental.app.entity.Rental;
-import com.bookrental.app.entity.User;
+import com.bookrental.app.entity.*;
 import com.bookrental.app.dto.rentaldto.RentalSimpleResponse;
 import com.bookrental.app.enums.RentalStatus;
 import com.bookrental.app.exception.*;
@@ -41,11 +38,6 @@ public class RentalService {
             Long libraryId,
             LocalDate requestedStartDate,
             LocalDate requestedEndDate) {
-
-
-//        if (requestedStartDate.isBefore(LocalDate.now())) {
-//            throw new DateOutOfBoundsException("The introduced dates are out of bounds");
-//        }
 
         if (requestedEndDate.isBefore(requestedStartDate) || requestedEndDate.isEqual(requestedStartDate)) {
             throw new DateOutOfBoundsException("The introduced dates are out of bounds");
@@ -116,9 +108,21 @@ public class RentalService {
         probeRental.setEndDate(endDate);
         probeRental.setReturnDate(returnDate);
         probeRental.setRentalStatus(rentalStatus);
-        probeRental.getUser().setEmail(userEmail);
-        probeRental.getExampler().getBook().setTitle(bookTitle);
-        probeRental.getExampler().getLibrary().setName(libraryName);
+
+        User probeUser = new User();
+        probeUser.setEmail(userEmail);
+        probeRental.setUser(probeUser);
+
+        Book probeBook = new Book();
+        probeBook.setTitle(bookTitle);
+
+        Library probeLibrary = new Library();
+        probeLibrary.setName(libraryName);
+
+        Exampler probeExampler = new Exampler();
+        probeExampler.setBook(probeBook);
+        probeExampler.setLibrary(probeLibrary);
+        probeRental.setExampler(probeExampler);
 
         ExampleMatcher matcher = ExampleMatcher.matching()
                 .withIgnoreCase()
